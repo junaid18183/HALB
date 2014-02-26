@@ -19,7 +19,7 @@ setup(
     #data_files=[(os.path.join(sys.prefix, 'juned', 'halb'), glob("conf/*"))],
     data_files=[
 		('/etc/HALB', ['conf/halb.conf']),
-		('/etc/HALB/DC1/dat', ['example/dat/example.vig','example/dat/real.dat','example/dat/vip.dat']),
+		('/etc/HALB/DATA/dat', ['example/dat/example.vig','example/dat/real.dat','example/dat/vip.dat']),
 	       ],
     long_description=open('README.md').read(),
     install_requires=[
