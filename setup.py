@@ -5,7 +5,7 @@ import os,sys
 setup(
     name='HALB',
     version='0.1.1',
-    url='https://github.com/junaid18183/james',
+    url='https://github.com/junaid18183/HALB',
     author='Juned Memon',
     author_email='junaid18183@gmail.com',
     license='LICENSE.txt',
@@ -21,7 +21,7 @@ setup(
 		('/etc/HALB', ['conf/halb.conf']),
 		('/etc/HALB/DC1/dat', ['example/dat/example.vig','example/dat/real.dat','example/dat/vip.dat']),
 	       ],
-    long_description=open('README.txt').read(),
+    long_description=open('README.md').read(),
     install_requires=[
         "argparse",
 	"ConfigParser",
