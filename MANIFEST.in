@@ -1,0 +1,5 @@
+include CHANGES.txt
+include LICENSE
+include MANIFEST.in
+recursive-include example *.*
+recursive-include conf *.*

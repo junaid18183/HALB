@@ -1,0 +1,14 @@
+CHANGES.txt
+LICENSE
+MANIFEST.in
+README.txt
+setup.cfg
+setup.py
+bin/lbtool
+conf/halb.conf
+example/dat/example.vig
+example/dat/real.dat
+example/dat/vip.dat
+halb/__init__.py
+halb/halb.py
+halb/install_dependacies.py

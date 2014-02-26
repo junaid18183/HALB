@@ -1,0 +1,109 @@
+#! /usr/bin/python
+
+import sys,argparse
+from  halb.halb import *
+# +----------------------------------------------------------------------+
+def help():
+	options = """
+		exit|quit --> To exit the program
+		gen_conf|generate_conf --> To generate the Haproxy configuration
+		ha_vig --> start|stop|reload|restart|status the configuration."
+		gen_keep --> MASTER|BACKUP  genrates the Keepalived Configuration
+		is --> set the server status to In serving
+		oos --> set the server status to Out of serving
+		help --> show the valid commands.
+		"""
+ 	print "Valid Choices are : %s" % options
+
+# +----------------------------------------------------------------------+
+def ha_vig (vig_name,cmd):
+	if cmd not in ('start','stop','status','restart','reload'):
+		print "Not valid option."
+		exit(2)
+	else :
+		options = {     'start' : ha_vig_start,
+				'stop' : ha_vig_stop,
+				'reload' : ha_vig_reload,
+				'restart' : ha_vig_restart,
+				'status' : ha_vig_status,
+			  }		
+		options[cmd](vig_name)
+
+# +----------------------------------------------------------------------+
+def keep_init (cmd):
+	if cmd not in ('start','stop','status','restart','reload'):
+		print "Not valid option."
+		exit(2)
+	else :
+		options = {     'start' : 'start',
+				'stop' : 'stop',
+				'reload' : 'reload',
+				'restart' : 'restart',
+				'status' : 'status',
+			  }		
+
+	print options[cmd]
+# +----------------------------------------------------------------------+
+def process(args) :
+	vig_name=args.vig[0]
+	prompt=vig_name+"> "
+	while True:
+		lb_cmd = raw_input(prompt)
+	        lb_cmd_all = lb_cmd.strip()
+		lb_cmd = lb_cmd.split()
+                if len(lb_cmd) < 1 :  ## You did'nt typed anything
+			lb_cmd="juned"
+		#print lb_cmd
+		if lb_cmd[0] == 'exit' or lb_cmd[0] == 'quit':
+			exit(0)
+		else:
+			if lb_cmd[0] == 'gen_conf' or lb_cmd[0] == 'generate_conf':
+				#print ("%s You want to run %s") %(prompt,lb_cmd[0])
+				gen_conf(vig_name)
+			elif lb_cmd[0] == 'help':
+			     help ()
+			elif lb_cmd[0] == 'ha_vig':
+			     if len(lb_cmd) < 2:
+				print "You need to tell me what you want to do, valid options are start|stop|status|restart"
+			     else :
+				     ha_vig (vig_name,lb_cmd[1])
+			elif lb_cmd[0] == 'gen_keep' :
+				if len(lb_cmd) < 2:
+					 print "Usage: gen_keep <MASTER|BACKUP"
+				else:
+					if lb_cmd[1] not in ('MASTER','BACKUP'):
+						print "Usage: gen_keep <MASTER|BACKUP"
+					else :
+						keep_init_gen(vig_name,lb_cmd[1])
+			elif lb_cmd[0] == 'is' or lb_cmd[0] == 'oos' :
+				if len(lb_cmd) < 2:
+                                         print "Usage: %s <Servername>" %lb_cmd[0]
+                                else:
+					server = lb_cmd[1]
+					status = lb_cmd [0]
+					change_status (vig_name,server,status)	
+			elif lb_cmd[0] == 'keep_init' :
+				if len(lb_cmd) < 2:
+                                         print "Usage: gen_keep <MASTER|BACKUP"
+                                else:
+					keep_init(lb_cmd[1])
+                        else :
+				#notice=prompt+lb_cmd_all+" is not a valid lbtool command.Do you want to run this command on Terminal(Y/y/N/n)"
+				notice=prompt+"Do you want to run this command on Terminal(Y/y/N/n)"
+				input=raw_input(notice)
+				if input=='Y' or input=='y':
+					os.system(lb_cmd_all)
+	return 
+# ----------------------------------------------------------------------+
+def main ():
+        parser = argparse.ArgumentParser(description="Manages The Haproxy LoadBalancer")
+	parser.add_argument('vig', metavar='vig-name', type=str, nargs=1, help='Provide the VIG name to proceed')
+        parser.set_defaults(func=process)
+        args = parser.parse_args()
+        args.func(args)
+        return 0
+# +----------------------------------------------------------------------+
+
+if __name__ == "__main__":
+         sys.exit(main())
+# +----------------------------------------------------------------------+
