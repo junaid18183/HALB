@@ -2,6 +2,7 @@ CHANGES.txt
 LICENSE
 MANIFEST.in
 README.md
+README.txt
 setup.py
 bin/lbtool
 conf/halb.conf
@@ -10,4 +11,3 @@ example/dat/real.dat
 example/dat/vip.dat
 halb/__init__.py
 halb/halb.py
-halb/install_dependacies.py
