@@ -45,8 +45,9 @@ global
         maxconn 25000
         #debug
         #quiet
-        user prod
-        group prod
+        #user prod
+        #group prod
+        # Otherwise add users
         stats socket /var/run/%s.sock level admin
 
 defaults
@@ -58,9 +59,9 @@ defaults
         retries 3
         option 	redispatch
         maxconn 	%d
-        contimeout      %d
-        clitimeout      %d # maximum inactivity time on the client side
-        srvtimeout      %d # maximum inactivity time on the server side
+        timeout connect      %d
+        timeout client      %d # maximum inactivity time on the client side
+        timeout server      %d # maximum inactivity time on the server side
         stats enable
         stats auth admin:%s ##Auth user pass
 
@@ -167,7 +168,7 @@ def gen_conf (vig_name):
 	if os.path.isfile(HA_DAT+vig_name+".vig"):
 		print "Generating Configuration of %s at %s" % (vig_name,cfg) 
         	fo = open(cfg, "wb")
-        	header=addheader(vig_name,auth='Gl@mHA$99')
+        	header=addheader(vig_name,auth='Super$ecRet')
         	fo.write(header);
 		print "Written Header section successfully"
         	vips=get_vip_data(vig_name)
