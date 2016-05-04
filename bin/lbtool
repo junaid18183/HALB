@@ -7,8 +7,9 @@ def help():
 	options = """
 		exit|quit --> To exit the program
 		gen_conf|generate_conf --> To generate the Haproxy configuration
-		ha_vig --> start|stop|reload|restart|status the configuration."
+		ha_vig --> start|stop|reload|restart|status the configuration.
 		gen_keep --> MASTER|BACKUP  genrates the Keepalived Configuration
+                keep_init --> start|stop|status|restart|reload
 		is --> set the server status to In serving
 		oos --> set the server status to Out of serving
 		help --> show the valid commands.

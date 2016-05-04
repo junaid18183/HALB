@@ -105,7 +105,6 @@ def get_vip_data(vig_name):
                         vig_dns=re.sub("dns=","",vig_line[3])
                         vips[vip_name]={}
                         vips[vip_name]["vig_dns"]=vig_dns
-                        #VIP="lb/GGVA/dat/vip.dat"
                         f_VIP=open(VIP,"r")
                         for vip_line in f_VIP:
                                 if re.search(vip_name, vip_line):
@@ -301,7 +300,7 @@ def keep_init_footer(vig_name):
 
 ##########################################################
 def find_virtual_router_id(vig_name):
-	VIG="lb/GGVA/dat/"+vig_name+".vig"
+	VIG=HAPLB_BASE+"/dat/"+vig_name+".vig"
         try:
         	f_VIG=open(VIG,"r")
 	        for line in f_VIG:
@@ -326,7 +325,7 @@ def keep_init_gen (vig_name,state):
                 shutil.copy2(cfg,cfg_back)
                 print "Preserved the backup of %s at %s" %(cfg,cfg_back)
 		virtual_router_id=find_virtual_router_id(vig_name)
-                fo = open(cfg, "wb")
+                fo = open(cfg, "a")
                 header=keep_init_header(vig_name,state,VIP_DEVICE,virtual_router_id,priority)
                 fo.write(header);
                 print "Written Header section successfully"
