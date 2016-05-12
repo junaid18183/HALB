@@ -56,7 +56,7 @@ Create new .vig file for the rotation under /etc/HALB/DATA/dat/
 Ex: /etc/HALB/DATA/dat/test.vig (Replace test with the desired name)
 
     [root@lb1 lb]#  cat /etc/HALB/DATA/dat/test.vig
-    keepalived: vid=1,2
+    keepalived: vid=51
     #Vip: www.test.com
     www.test.com: vip=www.test.com name=www.test.com dns=www.test.com
     www.test.com: port=80 vip_mode=http,https vip_maxconn=25000
@@ -75,13 +75,13 @@ Ex: /etc/HALB/DATA/dat/test.vig (Replace test with the desired name)
 Add vip information under /etc/HALB/DATA/dat/vip.dat 
 
     [root@lb1 lb]# cat /etc/HALB/DATA/dat/vip.dat
-    www.test.com: vip=www.test.com ip2=10.0.9.214
+    www.test.com: vip=www.test.com ip=10.0.9.214
 
  - Add Vip info in vip.dat
 Add real server information under /etc/HALB/DATA/dat/real.dat 
 
     [root@lb1 lb]# cat /etc/HALB/DATA/dat/real.dat
-    tiber1: status=is name=tiber1 dns=tiber1.test.colo ip1=10.0.7.54
+    tiber1: status=is name=tiber1 dns=tiber1.test.colo ip=10.0.7.54
 
 > Before adding check if the ips/servers
 > are present in the vip.dat and
@@ -186,3 +186,8 @@ Add the host to the .vig file for the rotation.
 test >  generate_conf
 test >  ha_vig restart
 test > exit
+
+
+#################################################
+misc -
+add net.ipv4.ip_nonlocal_bind = 1 in sysctl.conf so that keepalived can bind non local  ip's

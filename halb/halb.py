@@ -16,6 +16,7 @@ VIP_DEVICE=parser.get('halb', 'VIP_DEVICE')
 HAPLB_BASE=HAPLB_HOME+DC
 HA_DAT=HAPLB_BASE+"/dat/"
 HA_CONF=HAPLB_BASE+"/haproxy/"
+HA_CONF_BAK=HA_CONF+"bak/"
 HA_STATUS_DIR=HAPLB_BASE+"/status/"
 HA_BIN=HAPLB_BASE+"/bin/"
 VIP=HA_DAT+"vip.dat"
@@ -161,7 +162,7 @@ def gen_conf (vig_name):
 		shutil.copy2(HAPROXY,binary)
 		print "The Haproxy binary for this vig is %s " %binary
 	if os.path.isfile(cfg):
-		cfg_back=cfg+".bak"
+		cfg_back=HA_CONF_BAK+vig_name+".cfg.bak"+strftime("%d-%b-%Y-%H-%M-%S")
 		shutil.copy2(cfg,cfg_back)
 		print "Preserved the backup of %s at %s" %(cfg,cfg_back)
 	if os.path.isfile(HA_DAT+vig_name+".vig"):
@@ -293,6 +294,7 @@ def keep_init_footer(vig_name):
 	track_script {
         	chk_%s
 		}
+	#notify /home/prod/lb/notify_nagios.pl
 		}
 ## conf end for %s
 """ % (vig_name,vig_name)
@@ -321,7 +323,7 @@ def keep_init_gen (vig_name,state):
         #cfg="/tmp/juned.cfg"
         cfg=KEEPALIVE_CONF
         if os.path.isfile(cfg):
-                cfg_back=cfg+".back-"+strftime("%d-%b-%Y")
+                cfg_back=cfg+".back-"+strftime("%d-%b-%Y-%H-%M-%S")
                 shutil.copy2(cfg,cfg_back)
                 print "Preserved the backup of %s at %s" %(cfg,cfg_back)
 		virtual_router_id=find_virtual_router_id(vig_name)
