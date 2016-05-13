@@ -43,7 +43,7 @@ def keep_init (cmd):
 				'status' : 'status',
 			  }		
 
-	print options[cmd - not implimented yet]
+	print "options[cmd - not implimented yet]"
 # +----------------------------------------------------------------------+
 def process(args) :
 	vig_name=args.vig[0]

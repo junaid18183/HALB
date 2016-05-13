@@ -48,7 +48,7 @@ else:
 
 setup(
     name='HALB',
-    version='0.1.3',
+    version='0.1.4',
     url='https://github.com/junaid18183/HALB',
     author='Juned Memon',
     author_email='junaid18183@gmail.com',
