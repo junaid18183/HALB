@@ -135,7 +135,7 @@ def get_real_data(vig_name,vip_name):
         real={}
         f_VIG=open(VIG,"r")
         for vig_line in f_VIG:
-	    	if re.search(vip_name+": real=", vig_line):
+	    	if re.match(vip_name+": real=", vig_line):
                 	vig_line=vig_line.split()###sample line="data_sid_sortdb: real=ggvaapp23:9004 #is"
 	                vip_name=vig_line[0][:-1]
         	        backend=re.sub("real=","",vig_line[1])
