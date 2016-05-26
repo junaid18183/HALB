@@ -23,7 +23,7 @@ VIP=HA_DAT+"vip.dat"
 REAL=HA_DAT+"real.dat"
 
 
-for directory in HA_DAT,HA_CONF,HA_STATUS_DIR,HA_BIN:
+for directory in HA_DAT,HA_CONF,HA_CONF_BAK,HA_STATUS_DIR,HA_BIN:
 	if not os.path.exists(directory):
 	    os.makedirs(directory)
 
@@ -108,7 +108,7 @@ def get_vip_data(vig_name):
                         vips[vip_name]["vig_dns"]=vig_dns
                         f_VIP=open(VIP,"r")
                         for vip_line in f_VIP:
-                                if re.search(vip_name, vip_line):
+                                if re.match(vip_name, vip_line):
                                         vip=vip_line.split("=")[2][:-1] ### striping last character since new line
                                         vips[vip_name]["vip"]=vip
                         f_VIP.close
@@ -333,7 +333,7 @@ def keep_init_gen (vig_name,state):
                 print "Written Header section successfully"
 		vips=get_vip_data(vig_name)
 		for vip_name in vips:
-			data="\t\t%s dev %s"%(vips[vip_name]["vip"],VIP_DEVICE)
+			data="\t\t%s dev %s\n"%(vips[vip_name]["vip"],VIP_DEVICE)
 			fo.write(data);
 		print "Written VIP data successfully"
                 footer=keep_init_footer(vig_name)

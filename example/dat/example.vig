@@ -3,3 +3,9 @@ keepalived: vid=51
 example.juned.com: vip=example.juned.com name=example.juned.com dns=example.juned.com
 example.juned.com: port=81 vip_mode=http vip_maxconn=25000
 example.juned.com: real=localhost:80
+
+#Vip: s-example.juned.com
+s-example.juned.com: vip=s-example.juned.com name=s-example.juned.com dns=s-example.juned.com
+s-example.juned.com: port=443 vip_mode=tcp vip_maxconn=25000
+s-example.juned.com: real=localhost:443
+

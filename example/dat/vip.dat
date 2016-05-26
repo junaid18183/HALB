@@ -1,2 +1,3 @@
 # Test vip and config
 example.juned.com: vip=example.juned.com ip=127.0.0.1
+s-example.juned.com: vip=s-example.juned.com ip=127.0.0.1
