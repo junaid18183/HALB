@@ -38,8 +38,7 @@ def genconf(vig_name):
 
 ##########################################################
 def addheader(vig_name,maxconn=25000,contimeout=5000,clitimeout=50000,srvtimeout=50000,auth='admin'):
-	header ="""
-global
+	header ="""global
         log 127.0.0.1   local0
         log 127.0.0.1   local1 notice
         #log loghost    local0 info
@@ -73,6 +72,11 @@ defaults
 ##########################################################
 
 def addvip(vip_name,vip,port,vip_maxconn,vip_mode):
+	ssl_check = ""
+	mode = vip_mode
+	if vip_mode == "https" :
+		ssl_check = "\n    option ssl-hello-chk"
+		mode = "tcp"
 	block = """
 #Configuration for %s
 
@@ -82,8 +86,8 @@ def addvip(vip_name,vip,port,vip_maxconn,vip_mode):
     maxconn %s
     mode %s
     option forwardfor
-    balance leastconn
-""" % ( vip_name,vip_name,vip,port,vip,port,vip_maxconn,vip_mode)
+    balance leastconn %s
+""" % ( vip_name,vip_name,vip,port,vip,port,vip_maxconn,mode,ssl_check)
 
 	return block
 ##########################################################
@@ -174,18 +178,22 @@ def gen_conf (vig_name):
         	vips=get_vip_data(vig_name)
 		for vip_name in vips:
 			print "\tAdding VIP section for %s" % (vip_name)
-        		vip_block=addvip(vip_name,vips[vip_name]["vip"],vips[vip_name]["vip_port"],vips[vip_name]["vip_maxconn"],vips[vip_name]["vip_mode"])
-        		fo.write(vip_block)
-			real=get_real_data(vig_name,vip_name)
-			for backend in real: 
-				print "\t\tAdding Backend %s for %s" % (backend,vip_name)
-				oos=""
-				status=get_server_status(vig_name,backend)
-				if status == 'oos':
-					oos = "#oos"
-				backend_block=addbackend(oos,backend,real[backend]["ip"],real[backend]["port"])
-	        		fo.write(backend_block)
-				update_status_file(vig_name,backend,status)
+			vip_mode=vips[vip_name]["vip_mode"]
+			for mode in vip_mode.split(","):
+				vip_port = '443' if mode == 'https' else vips[vip_name]["vip_port"]
+        			vip_block=addvip(vip_name,vips[vip_name]["vip"],vip_port,vips[vip_name]["vip_maxconn"],mode)
+        			fo.write(vip_block)
+				real=get_real_data(vig_name,vip_name)
+				for backend in real: 
+					print "\t\tAdding Backend %s for %s" % (backend,vip_name)
+					oos=""
+					status=get_server_status(vig_name,backend)
+					if status == 'oos':
+						oos = "#oos"
+					real_port='443' if mode == 'https' else real[backend]["port"]
+					backend_block=addbackend(oos,backend,real[backend]["ip"],real_port)
+	        			fo.write(backend_block)
+					update_status_file(vig_name,backend,status)
 		print "Completed."
         	fo.close()
 	else:
