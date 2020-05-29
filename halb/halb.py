@@ -11,6 +11,9 @@ DC=parser.get('halb', 'DC')
 HAPROXY=parser.get('halb', 'HAPROXY')
 KEEPALIVE_CONF=parser.get('halb', 'KEEPALIVE_CONF')
 VIP_DEVICE=parser.get('halb', 'VIP_DEVICE')
+ADMIN_PASSWORD=parser.get('halb', 'ADMIN_PASSWORD')
+USER=parser.get('halb', 'USER')
+GROUP=parser.get('halb', 'GROUP')
 
 
 HAPLB_BASE=HAPLB_HOME+DC
@@ -45,9 +48,8 @@ def addheader(vig_name,maxconn=25000,contimeout=5000,clitimeout=50000,srvtimeout
         maxconn 25000
         #debug
         #quiet
-        #user prod
-        #group prod
-        # Otherwise add users
+        user %s
+        group %s
         stats socket /var/run/%s.sock level admin
 
 defaults
@@ -66,7 +68,7 @@ defaults
         stats auth admin:%s ##Auth user pass
 
 #begin block end
-""" % (vig_name,maxconn,contimeout,clitimeout,srvtimeout,auth)
+""" % (USER,GROUP,vig_name,maxconn,contimeout,clitimeout,srvtimeout,auth)
 
 	return  header
 ##########################################################
@@ -172,7 +174,7 @@ def gen_conf (vig_name):
 	if os.path.isfile(HA_DAT+vig_name+".vig"):
 		print "Generating Configuration of %s at %s" % (vig_name,cfg) 
         	fo = open(cfg, "wb")
-        	header=addheader(vig_name,auth='Super$ecRet')
+        	header=addheader(vig_name,auth=ADMIN_PASSWORD)
         	fo.write(header);
 		print "Written Header section successfully"
         	vips=get_vip_data(vig_name)
